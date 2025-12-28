@@ -4,13 +4,30 @@ server:
 spring:
   application:
     name: SERVICE-CAR
+
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+        register: true
+        health-check-path: /actuator/health
+        health-check-interval: 10s
+
   datasource:
+    url: jdbc:mysql://127.0.0.1:3308/carservicedb?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/carservicedb?createDatabaseIfNotExist=true
-    username: "root"
-    password: ""
+
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
